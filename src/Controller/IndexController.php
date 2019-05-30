@@ -6,26 +6,36 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use App\Helper\Sms;
 
-
-class IndexController
+class IndexController extends AbstractController
 {
     /**
      * @Route("/", name="index")
      */
     public function indexAction()
     {
-        return new Response(
-            'hello!'
-        );
+        $session = new Session();
+        return $this->render("index.html.twig", [
+            "auth" => $session->get("auth")
+        ]);
     }
 
     /**
-     * @Route("/send", name="send")
+     * @Route("/send", name="send", methods={"POST"})
      */
-    public function sendAction()
+    public function sendAction(Request $request)
     {
-        return;
+        $phone = $request->get("phone");
+        $message = $request->get("message");
+        $sms = new Sms();
+        
+        $sms->setPhone($phone);
+        $sms->setMessage($message);
+
+        $sms->sendMessage();
+        
+        return $this->redirectToRoute("index");
     }
 
     /**

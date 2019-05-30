@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{% if auth == true %}
+wyslij wiadomosc
+    <form action='/send' method='post'>
+        <input type="text" name="phone" placeholder="numer telefonu">
+        <textarea name="message" placeholder="wiadomosc"></textarea>
+        <input type="submit" value="wyslij">
+    </form>
+    <a href="/logout">wyloguj</a>
+
+{% else %}
+    Zaloguj sie
+    <form action='/login' method='post'>
+        <input type="text" name="login" placeholder="nazwa uzytkownika">
+        <input type="password" name="password" placeholder="hasło">
+        <input type="submit" value="Zaloguj">
+    </form>
+{% endif %}
+{% endblock %}
